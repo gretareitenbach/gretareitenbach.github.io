@@ -34,6 +34,11 @@ if (!prefersReducedMotion) {
       }
 
       event.preventDefault();
+      if (targetId === '#top') {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        return;
+      }
+
       target.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
   });
