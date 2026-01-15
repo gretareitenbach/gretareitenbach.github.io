@@ -59,3 +59,20 @@ const yearElement = document.getElementById('year');
 if (yearElement) {
   yearElement.textContent = new Date().getFullYear().toString();
 }
+
+const honorsMarquee = document.querySelector('.honors-marquee');
+const honorsTrack = honorsMarquee ? honorsMarquee.querySelector('.honors-track') : null;
+
+if (honorsMarquee && honorsTrack) {
+  const cards = Array.from(honorsTrack.children);
+
+  if (prefersReducedMotion) {
+    honorsMarquee.setAttribute('data-animated', 'false');
+  } else {
+    cards.forEach((card) => {
+      const clone = card.cloneNode(true);
+      clone.setAttribute('aria-hidden', 'true');
+      honorsTrack.appendChild(clone);
+    });
+  }
+}

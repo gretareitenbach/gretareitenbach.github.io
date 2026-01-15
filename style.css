@@ -18,6 +18,8 @@
   --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-serif: "DM Serif Display", "Times New Roman", serif;
   --container-width: min(1120px, 90vw);
+  --honors-gap: 1.5rem;
+  --honors-speed: 45s;
 }
 
 * {
@@ -415,23 +417,136 @@ button {
   color: rgba(226, 232, 240, 0.92);
 }
 
-.honors {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  display: grid;
-  gap: 1rem;
+.honors-marquee {
+  position: relative;
+  overflow: hidden;
+  padding: 0.75rem 0;
+  mask-image: linear-gradient(90deg, transparent 0%, #fff 10%, #fff 90%, transparent 100%);
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, #fff 10%, #fff 90%, transparent 100%);
 }
 
-.honors li {
+.honors-marquee::before,
+.honors-marquee::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 6rem;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.honors-marquee::before {
+  left: 0;
+  background: linear-gradient(90deg, var(--color-surface-alt), rgba(15, 23, 42, 0));
+}
+
+.honors-marquee::after {
+  right: 0;
+  background: linear-gradient(270deg, var(--color-surface-alt), rgba(15, 23, 42, 0));
+}
+
+.honors-track {
   display: flex;
-  justify-content: space-between;
-  gap: 2rem;
-  padding: 1.25rem 1.5rem;
+  align-items: stretch;
+  gap: var(--honors-gap);
+  width: max-content;
+  will-change: transform;
+}
+
+.honors-marquee[data-animated="true"] .honors-track {
+  animation: honors-scroll var(--honors-speed) linear infinite;
+}
+
+.honors-marquee:hover .honors-track,
+.honors-marquee:focus-within .honors-track {
+  animation-play-state: paused;
+}
+
+.honors-marquee[data-animated="false"] .honors-track {
+  animation: none;
+}
+
+.honors-marquee[data-animated="false"] {
+  overflow-x: auto;
+  mask-image: none;
+  -webkit-mask-image: none;
+  scroll-snap-type: x mandatory;
+}
+
+.honors-marquee[data-animated="false"]::before,
+.honors-marquee[data-animated="false"]::after {
+  display: none;
+}
+
+.honors-marquee[data-animated="false"] .honors-track {
+  width: 100%;
+}
+
+.honors-marquee[data-animated="false"] .honor-card {
+  scroll-snap-align: start;
+  flex: 0 0 auto;
+  max-width: none;
+}
+
+.honor-card {
+  position: relative;
+  padding: 1.75rem;
   border-radius: var(--radius-md);
   background: var(--color-card);
   border: 1px solid var(--color-border);
-  color: rgba(226, 232, 240, 0.85);
+  box-shadow: var(--shadow-small);
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  flex: 0 0 280px;
+  max-width: 320px;
+}
+
+.honor-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  border: 1px solid rgba(125, 211, 252, 0.35);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  pointer-events: none;
+}
+
+.honor-card:hover,
+.honor-card:focus-within {
+  transform: translateY(-3px);
+  border-color: rgba(125, 211, 252, 0.5);
+  box-shadow: 0 18px 40px rgba(56, 189, 248, 0.2);
+}
+
+.honor-card:hover::after,
+.honor-card:focus-within::after {
+  opacity: 1;
+}
+
+.honor-card__meta {
+  margin: 0 0 0.5rem;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--color-muted);
+}
+
+.honor-card__title {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  line-height: 1.4;
+}
+
+@keyframes honors-scroll {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
 }
 
 .contact {
@@ -565,9 +680,13 @@ textarea {
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   }
 
-  .honors li {
-    flex-direction: column;
-    gap: 0.5rem;
+  .honors-marquee::before,
+  .honors-marquee::after {
+    width: 4rem;
+  }
+
+  .honor-card {
+    padding: 1.5rem;
   }
 
   .site-footer__inner {
@@ -591,6 +710,15 @@ textarea {
 
   .hero {
     padding-top: 6.5rem;
+  }
+
+  .honors-marquee::before,
+  .honors-marquee::after {
+    width: 3rem;
+  }
+
+  .honor-card {
+    flex-basis: 220px;
   }
 }
 
