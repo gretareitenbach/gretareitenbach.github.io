@@ -34,11 +34,6 @@ if (!prefersReducedMotion) {
       }
 
       event.preventDefault();
-      if (targetId === '#top') {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-        return;
-      }
-
       target.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
   });
@@ -78,6 +73,23 @@ if (honorsMarquee && honorsTrack) {
       const clone = card.cloneNode(true);
       clone.setAttribute('aria-hidden', 'true');
       honorsTrack.appendChild(clone);
+    });
+  }
+}
+
+const skillsMarquee = document.querySelector('.skills__marquee');
+const skillsTrack = skillsMarquee ? skillsMarquee.querySelector('.skills__track') : null;
+
+if (skillsMarquee && skillsTrack) {
+  const tiles = Array.from(skillsTrack.children);
+
+  if (prefersReducedMotion) {
+    skillsMarquee.setAttribute('data-animated', 'false');
+  } else {
+    tiles.forEach((tile) => {
+      const clone = tile.cloneNode(true);
+      clone.setAttribute('aria-hidden', 'true');
+      skillsTrack.appendChild(clone);
     });
   }
 }

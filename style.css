@@ -417,6 +417,118 @@ button {
   color: rgba(226, 232, 240, 0.92);
 }
 
+.skills__marquee {
+  position: relative;
+  margin-top: 3rem;
+  overflow: hidden;
+  padding: 0.75rem 0;
+  mask-image: linear-gradient(90deg, transparent 0%, #fff 10%, #fff 90%, transparent 100%);
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, #fff 10%, #fff 90%, transparent 100%);
+}
+
+.skills__marquee::before,
+.skills__marquee::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 6rem;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.skills__marquee::before {
+  left: 0;
+  background: linear-gradient(90deg, var(--color-surface-alt), rgba(15, 23, 42, 0));
+}
+
+.skills__marquee::after {
+  right: 0;
+  background: linear-gradient(270deg, var(--color-surface-alt), rgba(15, 23, 42, 0));
+}
+
+.skills__track {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  width: max-content;
+  will-change: transform;
+  animation: skills-scroll 36s linear infinite;
+}
+
+.skills__marquee:hover .skills__track,
+.skills__marquee:focus-within .skills__track {
+  animation-play-state: paused;
+}
+
+.skill-tile {
+  display: grid;
+  place-items: center;
+  gap: 0.6rem;
+  padding: 1rem 1.5rem;
+  min-width: 136px;
+  border-radius: var(--radius-sm);
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-small);
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.skill-tile:hover,
+.skill-tile:focus-within {
+  transform: translateY(-3px);
+  border-color: rgba(125, 211, 252, 0.45);
+  box-shadow: 0 16px 36px rgba(56, 189, 248, 0.18);
+}
+
+.skill-tile__icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  background: rgba(148, 163, 184, 0.12);
+  border: 1px solid rgba(148, 163, 184, 0.24);
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+
+.skill-tile__icon img {
+  width: 70%;
+  height: 70%;
+  object-fit: contain;
+}
+
+.skill-tile figcaption {
+  margin: 0;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: rgba(226, 232, 240, 0.85);
+  letter-spacing: 0.02em;
+}
+
+.skills__marquee[data-animated="false"] {
+  overflow-x: auto;
+  mask-image: none;
+  -webkit-mask-image: none;
+  padding-bottom: 0.25rem;
+  scroll-snap-type: x mandatory;
+}
+
+.skills__marquee[data-animated="false"]::before,
+.skills__marquee[data-animated="false"]::after {
+  display: none;
+}
+
+.skills__marquee[data-animated="false"] .skills__track {
+  animation: none;
+  width: 100%;
+}
+
+.skills__marquee[data-animated="false"] .skill-tile {
+  scroll-snap-align: start;
+  flex: 0 0 auto;
+}
+
 .honors-marquee {
   position: relative;
   overflow: hidden;
@@ -537,6 +649,16 @@ button {
   font-family: var(--font-serif);
   font-size: 1.15rem;
   line-height: 1.4;
+}
+
+@keyframes skills-scroll {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
 }
 
 @keyframes honors-scroll {
@@ -685,6 +807,11 @@ textarea {
     width: 4rem;
   }
 
+  .skills__marquee::before,
+  .skills__marquee::after {
+    width: 4rem;
+  }
+
   .honor-card {
     padding: 1.5rem;
   }
@@ -710,6 +837,11 @@ textarea {
 
   .hero {
     padding-top: 6.5rem;
+  }
+
+  .skills__marquee::before,
+  .skills__marquee::after {
+    width: 3rem;
   }
 
   .honors-marquee::before,
